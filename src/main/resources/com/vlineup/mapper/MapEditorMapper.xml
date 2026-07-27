@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vlineup.mapper.MapEditorMapper">
+    <insert id="insertOrUpdateMapBarrier">
+        insert into map_barrier (uuid, map_id, x, y, rotation, scale_x, side)
+        values
+        <foreach collection="mapBarrier" item="barrier" separator=",">
+            (#{barrier.uuid}, #{barrier.mapId}, #{barrier.x}, #{barrier.y}, #{barrier.rotation}, #{barrier.scaleX},
+            #{barrier.side})
+        </foreach>
+        on duplicate key update
+        map_id=values(map_id),x=values(x),y=values(y),rotation=values(rotation),scale_x=values(scale_x),side=values(side)
+    </insert>
+
+    <select id="selectMapBarrierList" resultType="com.vlineup.entity.mapEdtior.MapBarrier">
+        select *
+        from map_barrier
+        where map_id = #{mapId}
+    </select>
+
+    <insert id="insertOrUpdateMapPoint">
+        insert into map_point (uuid, map_id, x, y, text)
+        values
+        <foreach collection="mapPoint" item="point" separator=",">
+            (#{point.uuid}, #{point.mapId}, #{point.x}, #{point.y},#{point.text})
+        </foreach>
+        on duplicate key update
+        map_id=values(map_id),x=values(x),y=values(y),text=values(text)
+    </insert>
+
+    <select id="selectMapPointList" resultType="com.vlineup.entity.mapEdtior.MapPoint">
+        select *
+        from map_point
+        where map_id = #{mapId}
+    </select>
+
+    <insert id="insertOrUpdateMapSkillBall">
+        insert into map_SkillBall (uuid, map_id, x, y)
+        values
+        <foreach collection="mapSkillBall" item="SkillBall" separator=",">
+            (#{SkillBall.uuid}, #{SkillBall.mapId}, #{SkillBall.x}, #{SkillBall.y})
+        </foreach>
+        on duplicate key update
+        map_id=values(map_id),x=values(x),y=values(y)
+    </insert>
+
+    <select id="selectMapSkillBallList" resultType="com.vlineup.entity.mapEdtior.MapSkillBall">
+        select *
+        from map_skillball
+        where map_id = #{mapId}
+    </select>
+
+    <delete id="deleteMapNode">
+        delete
+        from ${tableName}
+        where uuid = #{uuid}
+    </delete>
+
+</mapper>

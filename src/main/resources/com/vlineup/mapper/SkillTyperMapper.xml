@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vlineup.mapper.SkillTyperMapper">
+    <!--Throw-->
+    <insert id="insertThrowSkill">
+        insert into throw_skill (uuid, agent_id, map_id, skill_index, skill_icon_x, skill_icon_y, agent_icon_x,
+                                 agent_icon_y)
+        values (#{uuid}, #{agentId}, #{mapId}, #{skillIndex}, #{skillIconX}, #{skillIconY}, #{agentIconX},
+                #{agentIconY})
+    </insert>
+    <select id="selectThrowSkillList" resultType="com.vlineup.entity.skillType.ThrowSkill">
+        select *
+        from throw_skill
+        INNER JOIN skill_content on throw_skill.uuid = skill_content.uuid
+        and throw_skill.agent_id = #{agentId} and throw_skill.map_id = #{mapId} and
+        throw_skill.skill_index = #{skillIndex}
+        <if test="side!='所有'">
+            and skill_content.side = #{side}
+        </if>
+    </select>
+    <select id="selectThrowSkillCollect" resultType="com.vlineup.entity.skillType.ThrowSkill">
+        select *
+        from throw_skill
+        INNER JOIN skill_collect
+        on throw_skill.uuid = skill_collect.skill_uuid and throw_skill.map_id = #{mapId} and
+        throw_skill.skill_index = #{skillIndex} and throw_skill.agent_id = #{agentId} and
+        skill_collect.username=#{username}
+        INNER JOIN skill_content on skill_content.uuid = throw_skill.uuid
+        <if test="side!='所有'">
+            and skill_content.side=#{side}
+        </if>
+    </select>
+</mapper>
