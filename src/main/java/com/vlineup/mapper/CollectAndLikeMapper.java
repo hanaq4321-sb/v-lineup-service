@@ -1,10 +1,7 @@
 package com.vlineup.mapper;
 
 import com.vlineup.entity.UserCollect;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface CollectAndLikeMapper {

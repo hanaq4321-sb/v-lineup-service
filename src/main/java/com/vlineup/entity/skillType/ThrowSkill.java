@@ -12,7 +12,7 @@ public class ThrowSkill {
     private String uuid;
     private String agentId;
     private String mapId;
-    private float skillIndex;
+    private int skillIndex;
     private float skillIconX;
     private float skillIconY;
     private float agentIconX;

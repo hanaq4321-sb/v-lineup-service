@@ -1,8 +1,11 @@
 package com.vlineup.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.vlineup.entity.SkillContent;
 import com.vlineup.entity.UserCollect;
 import com.vlineup.mapper.CollectAndLikeMapper;
+import com.vlineup.mapper.SkillContentMapper;
 import com.vlineup.service.CollectAndLikeService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class CollectAndLikeServiceImpl implements CollectAndLikeService {
     @Resource
     private CollectAndLikeMapper collectAndLikeMapper;
+    @Resource
+    private SkillContentMapper skillContentMapper;
 
     @Override
     public Boolean isAlreadyCollect(String username, String uuid) {
@@ -24,11 +29,19 @@ public class CollectAndLikeServiceImpl implements CollectAndLikeService {
 
     @Override
     public void saveCollect(String username, String uuid) {
+        LambdaUpdateWrapper<SkillContent> wrapper = new LambdaUpdateWrapper<SkillContent>()
+                .setSql("collect=collect+1")
+                .eq(SkillContent::getUuid, uuid);
+        skillContentMapper.update(wrapper);
         collectAndLikeMapper.insertCollect(username, uuid);
     }
 
     @Override
     public void removeCollect(String username, String uuid) {
+        LambdaUpdateWrapper<SkillContent> wrapper = new LambdaUpdateWrapper<SkillContent>()
+                .setSql("collect=collect-1")
+                .eq(SkillContent::getUuid, uuid);
+        skillContentMapper.update(wrapper);
         collectAndLikeMapper.deleteCollect(username, uuid);
     }
 }

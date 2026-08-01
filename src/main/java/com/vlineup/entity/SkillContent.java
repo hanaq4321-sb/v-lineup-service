@@ -30,6 +30,7 @@ public class SkillContent {
     private String video;
     @TableField("`like`")
     private Integer like;
+    private Integer collect;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 }

@@ -1,6 +1,7 @@
 package com.vlineup.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.vlineup.entity.skillType.LineSkill;
 import com.vlineup.entity.skillType.ThrowSkill;
 import com.vlineup.mapper.SkillTyperMapper;
 import com.vlineup.service.SkillTypeService;
@@ -12,10 +13,10 @@ import java.util.List;
 @Service
 public class SkillTypeServiceImpl implements SkillTypeService {
 
-    //ThrowSkill
     @Resource
     private SkillTyperMapper skillTyperMapper;
 
+    //#region ThrowSkill
     @Override
     public void saveThrowSkill(ThrowSkill throwSkill) {
         skillTyperMapper.insertThrowSkill(throwSkill);
@@ -35,4 +36,27 @@ public class SkillTypeServiceImpl implements SkillTypeService {
     public int getThrowSkillCount(String mapId, String agentId, String skillIndex) {
         return skillTyperMapper.selectCountThrowSKill(mapId, agentId, skillIndex);
     }
+    //#endregion
+
+    //#region LineSkill
+    @Override
+    public void saveLineSkill(LineSkill lineSkill) {
+        skillTyperMapper.insertLineSkill(lineSkill);
+    }
+
+    @Override
+    public List<LineSkill> getLineSkillList(String mapId, String agentId, int skillIndex, String side) {
+        return skillTyperMapper.selectLineSkillList(mapId, agentId, skillIndex, side);
+    }
+
+    @Override
+    public List<LineSkill> getLineSkillCollect(String mapId, String agentId, int skillIndex, String side, String username) {
+        return skillTyperMapper.selectLineSkillCollect(mapId, agentId, skillIndex, side, username);
+    }
+
+    @Override
+    public int getLineSkillCount(String mapId, String agentId, int skillIndex) {
+        return skillTyperMapper.selectCountLineSkill(mapId, agentId, skillIndex);
+    }
+    //#endregion
 }

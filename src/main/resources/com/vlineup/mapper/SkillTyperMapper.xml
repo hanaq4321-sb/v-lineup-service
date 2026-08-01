@@ -30,4 +30,29 @@
             and skill_content.side=#{side}
         </if>
     </select>
+
+    <!-- Line -->
+    <insert id="insertLineSkill">
+        insert into line_skill (uuid, agent_id, map_id, skill_index, group_x, group_y, angle)
+        values (#{uuid}, #{agentId}, #{mapId}, #{skillIndex}, #{groupX}, #{groupY}, #{angle})
+    </insert>
+    <select id="selectLineSkillList" resultType="com.vlineup.entity.skillType.LineSkill">
+        select *
+        from line_skill as line
+        INNER JOIN skill_content as content on line.uuid = content.uuid
+        and line.map_id = #{mapId} and line.agent_id = #{agentId} and line.skill_index = #{skillIndex}
+        <if test="side!='所有'">
+            and content.side=#{side}
+        </if>
+    </select>
+    <select id="selectLineSkillCollect" resultType="com.vlineup.entity.skillType.LineSkill">
+        select *
+        from line_skill as line
+        INNER JOIN skill_collect as collect on line.uuid = collect.uuid
+        and line.map_id = #{mapId} and line.agent_id=#{agentId} and line.skill_index = #{skillIndex}
+        INNER JOIN skill_content as content on content.uuid = line.uuid
+        <if test="side!='所有'">
+            and content.side=#{side}
+        </if>
+    </select>
 </mapper>
