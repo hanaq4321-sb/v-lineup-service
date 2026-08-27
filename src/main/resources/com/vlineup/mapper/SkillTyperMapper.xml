@@ -31,6 +31,36 @@
         </if>
     </select>
 
+    <!-- ThrowGround -->
+    <insert id="insertThrowGroundSkill">
+        insert into throwground_skill (uuid, agent_id, map_id, skill_index, skill_icon_x, skill_icon_y, agent_icon_x,
+                                       agent_icon_y)
+        values (#{uuid}, #{agentId}, #{mapId}, #{skillIndex}, #{skillIconX}, #{skillIconY}, #{agentIconX},
+                #{agentIconY})
+    </insert>
+    <select id="selectThrowGroundSkillList" resultType="com.vlineup.entity.skillType.ThrowSkill">
+        select *
+        from throwground_skill as skill
+        INNER JOIN skill_content as content on skill.uuid = content.uuid
+        and skill.agent_id = #{agentId} and skill.map_id = #{mapId} and
+        skill.skill_index = #{skillIndex}
+        <if test="side!='所有'">
+            and content.side = #{side}
+        </if>
+    </select>
+    <select id="selectThrowGroundSkillCollect" resultType="com.vlineup.entity.skillType.ThrowSkill">
+        select *
+        from throwground_skill as skill
+        INNER JOIN skill_collect as collect
+        on skill.uuid = collect.skill_uuid and skill.map_id = #{mapId} and
+        skill.skill_index = #{skillIndex} and skill.agent_id = #{agentId} and
+        collect.username=#{username}
+        INNER JOIN skill_content as content on content.uuid = skill.uuid
+        <if test="side!='所有'">
+            and content.side=#{side}
+        </if>
+    </select>
+
     <!-- Line -->
     <insert id="insertLineSkill">
         insert into line_skill (uuid, agent_id, map_id, skill_index, group_x, group_y, angle)
@@ -48,9 +78,45 @@
     <select id="selectLineSkillCollect" resultType="com.vlineup.entity.skillType.LineSkill">
         select *
         from line_skill as line
-        INNER JOIN skill_collect as collect on line.uuid = collect.uuid
+        INNER JOIN skill_collect as collect on line.uuid = collect.skill_uuid
         and line.map_id = #{mapId} and line.agent_id=#{agentId} and line.skill_index = #{skillIndex}
         INNER JOIN skill_content as content on content.uuid = line.uuid
+        <if test="side!='所有'">
+            and content.side=#{side}
+        </if>
+    </select>
+
+    <!-- Control -->
+    <insert id="insertControlSkill">
+        insert into control_skill (uuid, agent_id, map_id, skill_index, skill_icon_x, skill_icon_y, point_list)
+        values (#{uuid}, #{agentId}, #{mapId}, #{skillIndex}, #{skillIconX}, #{skillIconY},
+                #{pointList,typeHandler=com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler})
+    </insert>
+    <resultMap id="controlResultMap" type="com.vlineup.entity.skillType.ControlSkill">
+        <id column="uuid" property="uuid"/>
+        <result column="agent_id" property="agentId"/>
+        <result column="map_id" property="mapId"/>
+        <result column="skill_index" property="skillIndex"/>
+        <result column="skill_icon_x" property="skillIconX"/>
+        <result column="skill_icon_y" property="skillIconY"/>
+        <result column="point_list" property="pointList"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+    <select id="selectControlSkillList" resultMap="controlResultMap">
+        select *, point_list
+        from control_skill as control
+        INNER JOIN skill_content as content on control.uuid = content.uuid
+        and control.map_id = #{mapId} and control.agent_id = #{agentId} and control.skill_index = #{skillIndex}
+        <if test="side!='所有'">
+            and content.side=#{side}
+        </if>
+    </select>
+    <select id="selectControlSkillCollect" resultMap="controlResultMap">
+        select *
+        from control_skill as control
+        INNER JOIN skill_collect as collect on control.uuid = collect.skill_uuid
+        and control.map_id = #{mapId} and control.agent_id=#{agentId} and control.skill_index = #{skillIndex}
+        INNER JOIN skill_content as content on content.uuid = control.uuid
         <if test="side!='所有'">
             and content.side=#{side}
         </if>

@@ -11,10 +11,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Resource
     private LoginInterceptor loginInterceptor;
 
-    //拦截器注册
+    // 拦截器注册
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //收藏等等触发拦截器检测
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/register", "/throwSkillCollect");
+        // 收藏等等触发拦截器检测
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/register", "/throwSkillCollect", "/lineSkillCollect", "/throwGroundSkillCollect", "/controlSkillCollect");
     }
 }
